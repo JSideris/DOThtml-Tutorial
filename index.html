@@ -1,0 +1,73 @@
+<!doctype HTML>
+<html>
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<script src="dothtml.js"></script>
+<body id="body"></body>
+<script>
+	var exampleNumb = 0;
+	dot.createWidget("example", function(title, runCallback){
+		var tempExampleNumb = exampleNumb;
+		exampleNumb++;
+		return dot.h2(title)
+		.div(
+			dot.div(
+				dot.pre(dot.t(runCallback.toString().substring(20, runCallback.toString().length - 2)))
+				.button("Run!").onclick(function(event){
+					dot("#example" + tempExampleNumb).empty().h(runCallback)
+				})
+			).class("tutorial-box-inner")
+			.div().id("example" + tempExampleNumb).class("tutorial-box-inner")
+		).class("tutorial-box");
+	});
+
+	dot.createWidget("orderedlist", function(array){
+		var m = 0;
+		return dot.ol(
+			dot.each(array, function(element){
+				m++;
+				//Note that in the video, the second parameter of wait was a function. That was redundant.
+				return dot.wait(1000 * m, dot.li(element))
+			})
+		);
+	})
+
+	dot("#body").h1("DOThtml Examples")
+	.example("Hello World", function(){
+return dot.h1('Hello, World!');
+	})
+	.example("Conditional ELements", function(){
+return dot.if(Math.random() < 0.33, "Rock")
+	.elseif(Math.random() < 0.5, "Paper")
+	.else("Scissors");
+	})
+	.example("Arrays", function(){
+return dot.ul([
+	dot.li("List Item 1"),
+	dot.li(2),
+	"<li>string 3!</li>",
+	function(){
+		return dot.li("Function works!");
+	}
+]);
+	})
+	.example("Iterative", function(){
+return dot.iterate(5, function(i){
+	return i;
+})
+	})
+	.example("Each", function(){
+return dot.ol(
+	dot.each(["apple", "banana", "orange"], function(element){
+		return dot.li(element);
+	})
+)
+	})
+	.example("Timed Elements", function(){
+return dot.wait(1000, dot.span("Waited!")) //Got rid of the redundant function parameter.
+	})
+	.example("Custom Widget Test", function(){
+return dot.orderedlist(["apple", "banana", "orange"]);
+	})
+</script>
+</html>
